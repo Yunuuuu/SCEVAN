@@ -2,7 +2,11 @@
 % Please edit documentation in R/pipelineCNA.R
 \name{pipelineCNA}
 \alias{pipelineCNA}
-\title{pipelineCNA Executes the entire SCEVAN pipeline that classifies tumour and normal cells from the raw count matrix, infer the clonal profile of cancer cells and looks for possible sub-clones in the tumour cell matrix automatically analysing the specific and shared alterations of each subclone and a differential analysis of pathways and genes expressed in each subclone.}
+\title{pipelineCNA Executes the entire SCEVAN pipeline that classifies tumour and
+normal cells from the raw count matrix, infer the clonal profile of cancer
+cells and looks for possible sub-clones in the tumour cell matrix
+automatically analysing the specific and shared alterations of each subclone
+and a differential analysis of pathways and genes expressed in each subclone.}
 \usage{
 pipelineCNA(
   count_mtx,
@@ -15,35 +19,53 @@ pipelineCNA(
   plotTree = TRUE,
   AdditionalGeneSets = NULL,
   SCEVANsignatures = TRUE,
-  organism = "human"
+  organism = "human",
+  ngenes_chr = 5,
+  perc_genes = 10
 )
 }
 \arguments{
-\item{count_mtx}{Raw count matrix with genes on rows (both Gene Symbol or Ensembl ID are allowed) and cells on columns.}
+\item{count_mtx}{Raw count matrix with genes on rows (both Gene Symbol or
+Ensembl ID are allowed) and cells on columns.}
 
 \item{sample}{Sample name to save results (optional)}
 
 \item{par_cores}{Number of cores to run the pipeline (optional - default 20)}
 
-\item{norm_cell}{Vector of normal cells if the classification is already known and you are only interested in the clonal structure (optional)}
+\item{norm_cell}{Vector of normal cells if the classification is already
+known and you are only interested in the clonal structure (optional)}
 
-\item{SUBCLONES}{Boolean value TRUE if you are interested in analysing the clonal structure and FALSE if you are only interested in the classification of malignant and non-malignant cells (optional - default TRUE)}
+\item{SUBCLONES}{Boolean value TRUE if you are interested in analysing the
+clonal structure and FALSE if you are only interested in the classification
+of malignant and non-malignant cells (optional - default TRUE)}
 
-\item{beta_vega}{Specifies beta parameter for segmentation, higher beta for more coarse-grained segmentation. (optional - default 0.5)}
+\item{beta_vega}{Specifies beta parameter for segmentation, higher beta for
+more coarse-grained segmentation. (optional - default 0.5)}
 
-\item{ClonalCN}{Get clonal CN profile inference from all tumour cells (optional)}
+\item{ClonalCN}{Get clonal CN profile inference from all tumour cells
+(optional)}
 
 \item{plotTree}{Plot Phylogenetic tree (optional - default FALSE)}
 
-\item{AdditionalGeneSets}{list of additional signatures of normal cell types (optional)}
+\item{AdditionalGeneSets}{list of additional signatures of normal cell types
+(optional)}
 
-\item{SCEVANsignatures}{FALSE if you only want to use only the signatures specified in AdditionalGeneSets (default TRUE)}
+\item{SCEVANsignatures}{FALSE if you only want to use only the signatures
+specified in AdditionalGeneSets (default TRUE)}
 
-\item{organism}{Organism to be analysed (optional - "mouse" or "human" - default "human")}
+\item{organism}{Organism to be analysed (optional - "mouse" or "human" -
+default "human")}
+
+\item{ngenes_chr}{Minimum number of genes expressed on chromosome (optional -
+default 5)}
+
+\item{perc_genes}{Minimum percentage gene expressed in each cell (optional -
+default 10)}
 }
 \description{
-pipelineCNA Executes the entire SCEVAN pipeline that classifies tumour and normal cells from the raw count matrix, infer the clonal profile of cancer cells and looks for possible sub-clones in the tumour cell matrix automatically analysing the specific and shared alterations of each subclone and a differential analysis of pathways and genes expressed in each subclone.
-}
-\examples{
-res_pip <- pipelineCNA(count_mtx)
+pipelineCNA Executes the entire SCEVAN pipeline that classifies tumour and
+normal cells from the raw count matrix, infer the clonal profile of cancer
+cells and looks for possible sub-clones in the tumour cell matrix
+automatically analysing the specific and shared alterations of each subclone
+and a differential analysis of pathways and genes expressed in each subclone.
 }

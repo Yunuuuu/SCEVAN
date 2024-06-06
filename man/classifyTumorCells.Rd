@@ -2,7 +2,9 @@
 % Please edit documentation in R/classifyTumor.R
 \name{classifyTumorCells}
 \alias{classifyTumorCells}
-\title{classifyTumorCells Classify tumour and normal cells from the raw count matrix, using normal cells in the matrix or by subtracting a synthetic baseline from the matrix if there are no normal cells in the matrix.}
+\title{classifyTumorCells Classify tumour and normal cells from the raw count
+matrix, using normal cells in the matrix or by subtracting a synthetic
+baseline from the matrix if there are no normal cells in the matrix.}
 \usage{
 classifyTumorCells(
   count_mtx,
@@ -20,7 +22,8 @@ classifyTumorCells(
 \arguments{
 \item{count_mtx}{raw count matrix}
 
-\item{annot_mtx}{matrix containing the annotations of the genes (rows: genes, columns: chr start end)}
+\item{annot_mtx}{matrix containing the annotations of the genes (rows: genes,
+columns: chr start end)}
 
 \item{sample}{sample name (optional)}
 
@@ -30,14 +33,18 @@ classifyTumorCells(
 
 \item{norm_cell_names}{confident normal cells (optional)}
 
-\item{SEGMENTATION_CLASS}{Boolean value to perform segmentation before classification (default TRUE)}
+\item{SEGMENTATION_CLASS}{Boolean value to perform segmentation before
+classification (default TRUE)}
 
 \item{SMOOTH}{Boolean value to perform smoothing (default TRUE)}
 
-\item{beta_vega}{specifies beta parameter for segmentation, higher beta for more coarse-grained segmentation. (default 0.5)}
+\item{beta_vega}{specifies beta parameter for segmentation, higher beta for
+more coarse-grained segmentation. (default 0.5)}
 
 \item{gr_truth}{ground truth of classification (optional)}
 }
 \description{
-classifyTumorCells Classify tumour and normal cells from the raw count matrix, using normal cells in the matrix or by subtracting a synthetic baseline from the matrix if there are no normal cells in the matrix.
+classifyTumorCells Classify tumour and normal cells from the raw count
+matrix, using normal cells in the matrix or by subtracting a synthetic
+baseline from the matrix if there are no normal cells in the matrix.
 }

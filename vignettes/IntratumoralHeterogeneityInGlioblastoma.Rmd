@@ -22,10 +22,8 @@ load(url("https://www.dropbox.com/s/b9udpvhnc2ez9pc/MGH106_data.RData?raw=1"))
 We run the pipeline that performs the classification of malignant and non-malignant cells of the MGH106 sample using 20 cores and requesting analysis of possible subpopulations.
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
-
 library(SCEVAN)
 results <- SCEVAN::pipelineCNA(count_mtx, sample = "MGH106", par_cores = 20, SUBCLONES = TRUE, plotTree = TRUE)
-
 ```
 
 ## Output

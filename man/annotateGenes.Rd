@@ -15,6 +15,3 @@ Annotated matrix
 \description{
 annotateGenes Annotate genes with genomic coordinates with reference to hg38 using Ensembl based annotation package
 }
-\examples{
-count_mtx_annot <- annotateGenes(count_mtx)
-}

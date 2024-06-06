@@ -2,7 +2,8 @@
 % Please edit documentation in R/classifyTumor.R
 \name{classifyCluster}
 \alias{classifyCluster}
-\title{classifyCluster Classify the two major clusters of CNA matrix on the basis of confident normal cells}
+\title{classifyCluster Classify the two major clusters of CNA matrix on the basis of
+confident normal cells}
 \usage{
 classifyCluster(hcc2, norm_cell_names)
 }
@@ -15,5 +16,6 @@ classifyCluster(hcc2, norm_cell_names)
 classification of tumor and normal cells
 }
 \description{
-classifyCluster Classify the two major clusters of CNA matrix on the basis of confident normal cells
+classifyCluster Classify the two major clusters of CNA matrix on the basis of
+confident normal cells
 }

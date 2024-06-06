@@ -1,7 +1,7 @@
 #### function to load
-ssMwwGst <- function(geData, geneSet, ncore,  minLenGeneSet = 15 , regulon = FALSE, filename, standardize = TRUE){
+ssMwwGst <- function(geData, geneSet, ncore, minLenGeneSet = 15, regulon = FALSE, filename, standardize = TRUE) {
   library(yaGST)
-  if (standardize){
+  if (standardize) {
     means <- rowMeans(geData)
     sds <- apply(geData, 1, sd)
   }
@@ -27,18 +27,17 @@ ssMwwGst <- function(geData, geneSet, ncore,  minLenGeneSet = 15 , regulon = FAL
   #   ans <- list(tmp_NES = tmp_NES, tmp_pValue = tmp_pValue)
   #   return(ans)
   # }
-  
-  execMww <- function(ss){
-    if (standardize){
-      currentSample <- (geData[, ss] - means)/sds
-    }
-    else{
+
+  execMww <- function(ss) {
+    if (standardize) {
+      currentSample <- (geData[, ss] - means) / sds
+    } else {
       currentSample <- geData[, ss]
     }
     rankedList <- sort(currentSample, decreasing = T)
-    if(regulon == FALSE){
+    if (regulon == FALSE) {
       aMwwGST <- lapply(geneSet, function(x) mwwGST(rankedList, geneSet = x, minLenGeneSet = minLenGeneSet, alternative = "two.sided"))
-    }else{
+    } else {
       aMwwGST <- lapply(geneSet, function(x) mwwExtGST(rankedList, geneSetUp = x$pos, geneSetDown = x$neg, minLenGeneSet = minLenGeneSet))
     }
     aMwwGST <- aMwwGST[sapply(aMwwGST, length) != 0]
@@ -47,17 +46,19 @@ ssMwwGst <- function(geData, geneSet, ncore,  minLenGeneSet = 15 , regulon = FAL
     ans <- list(tmp_NES = tmp_NES, tmp_pValue = tmp_pValue)
     return(ans)
   }
-  
-  if(Sys.info()["sysname"]=="Windows"){
+
+  if (Sys.info()["sysname"] == "Windows") {
     cl <- parallel::makeCluster(getOption("cl.cores", ncore))
-    clusterExport(cl, c("mwwGST", "mwwExtGST","geneSet"), 
-                  envir=environment())
-    ans <-  parallel::parLapply(cl, 1:ncol(geData), execMww)
+    clusterExport(
+      cl, c("mwwGST", "mwwExtGST", "geneSet"),
+      envir = environment()
+    )
+    ans <- parallel::parLapply(cl, seq_len(ncol(geData)), execMww)
     parallel::stopCluster(cl)
-  }else{
-    ans <- parallel::mclapply(1:ncol(geData), execMww, mc.cores = ncore)
+  } else {
+    ans <- parallel::mclapply(seq_len(ncol(geData)), execMww, mc.cores = ncore)
   }
-  
+
   NES <- sapply(ans, function(x) x$tmp_NES)
   pValue <- sapply(ans, function(x) x$tmp_pValue)
   colnames(NES) <- colnames(pValue) <- colnames(geData)
@@ -66,20 +67,20 @@ ssMwwGst <- function(geData, geneSet, ncore,  minLenGeneSet = 15 , regulon = FAL
 }
 
 
-NESclassification <- function(NES, pValue, FDR, pval_filter, fdr_filter, pval_cutoff, nes_cutoff, nNES){
-  if(pval_filter == TRUE){
+NESclassification <- function(NES, pValue, FDR, pval_filter, fdr_filter, pval_cutoff, nes_cutoff, nNES) {
+  if (pval_filter == TRUE) {
     NES[pValue >= pval_cutoff] <- 0
   }
-  if(fdr_filter == TRUE){
+  if (fdr_filter == TRUE) {
     NES[FDR >= pval_cutoff] <- 0
   }
-  if(nes_cutoff != 0){
+  if (nes_cutoff != 0) {
     NES[NES < nes_cutoff] <- 0
   }
-  if(nNES == 1){
+  if (nNES == 1) {
     Class <- apply(NES, 2, function(x) names(which.max(x)))
   }
-  
+
   print(sort(table(Class), decreasing = T))
   return(Class)
 }

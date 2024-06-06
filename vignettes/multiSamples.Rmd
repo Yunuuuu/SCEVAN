@@ -22,10 +22,8 @@ load(url("https://www.dropbox.com/s/esqvnltucdqajg1/listCountMtx.RData?raw=1"))
 We run the pipeline that performs the classification of malignant and non-malignant cells of each sample and then the compare the inferred copy number between the different samples.
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
-
 library(SCEVAN)
-results <- SCEVAN::multiSampleComparisonClonalCN(listCountMtx, analysisName = "all", organism = "human" , par_cores = 20)
-
+results <- SCEVAN::multiSampleComparisonClonalCN(listCountMtx, analysisName = "all", organism = "human", par_cores = 20)
 ```
 
 ## Output
