@@ -176,18 +176,13 @@ classifyTumorCells <- function(count_mtx, annot_mtx, sample = "", distance = "eu
     alpha <- 0.5
     DeltaT <- 0.2
 
-    nonLinSmooth <- function(c) {
-      y <- count_mtx_relat[, c]
-      y <- append(0, y)
-      for (i in 1:niters) {
-        DeltaP <- (y[2:length(y)] - y[1:(length(y) - 1)]) / alpha
-        DeltaP <- c(DeltaP, 0)
-        tD <- tanh(DeltaP)
-        DeltaM <- tD[2:length(y)] - tD[1:(length(y) - 1)]
-        DeltaM <- c(0, DeltaM)
+    nonLinSmooth <- function(i) {
+      y <- count_mtx_relat[, i, drop = TRUE]
+      for (i in seq_len(niters)) {
+        DeltaP <- c(y[1L], diff(y)) / alpha
+        DeltaM <- diff(tanh(c(DeltaP, 0)))
         y <- y + DeltaT * DeltaM
       }
-      y <- y[2:length(y)]
       return(y)
     }
 
@@ -198,10 +193,18 @@ classifyTumorCells <- function(count_mtx, annot_mtx, sample = "", distance = "eu
       test.mc <- parallel::parLapply(cl, seq_len(ncol(count_mtx_relat)), nonLinSmooth)
       parallel::stopCluster(cl)
     } else {
-      test.mc <- parallel::mclapply(seq_len(ncol(count_mtx_relat)), nonLinSmooth, mc.cores = par_cores)
+      test.mc <- parallel::mclapply(
+        seq_len(ncol(count_mtx_relat)), 
+        nonLinSmooth,
+        mc.cores = par_cores
+      )
     }
 
-    count_mtx_smooth <- matrix(unlist(test.mc), ncol = ncol(count_mtx_relat), byrow = FALSE)
+    count_mtx_smooth <- matrix(
+      unlist(test.mc),
+      ncol = ncol(count_mtx_relat),
+      byrow = FALSE
+    )
     rm(test.mc)
     colnames(count_mtx_smooth) <- colnames(count_mtx_relat)
     count_mtx_relat <- count_mtx_smooth
@@ -209,7 +212,7 @@ classifyTumorCells <- function(count_mtx, annot_mtx, sample = "", distance = "eu
 
   ##### Segmentation with VegaMC #####
 
-  if (SEGMENTATION_CLASS & length(norm_cell_names) > 0) { # ){
+  if (SEGMENTATION_CLASS && length(norm_cell_names) > 0) { # ){
 
     print("9) Segmentation (VegaMC)")
 
